@@ -2,14 +2,19 @@
 html, body{
     padding: 0;
     margin: 0;
+    text-align: center;
 }
 * {
   font-family: 'Readex Pro', sans-serif;
 }
 
-body{
-    text-align: center;
-    /* background-color: red; */
+
+h2 {
+    font-style: italic;
+}
+.primary-title {
+    font-size: 90px;
+    color: rgb(255, 255, 255);
 }
 
 .primary-button {
@@ -45,12 +50,35 @@ nav .nav-button {
     border: none;
     margin: 10px;
 }
+nav .nav-button:disabled {
+    background-color: rgb(181, 180, 180);
+    color: rgb(189, 42, 90);
+}
 
 nav .logo-container .logo {
     width: 100%;
 }
 
+.secondary-button {
+    color: rgb(121, 119, 119);
+    background-color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: solid 2px rgb(121, 119, 119);
+    margin: 6px;
+}
+.secondary-button:hover {
+    color: rgb(48, 48, 48);
+    border: solid 2px rgb(48, 48, 48);
+}
+
 /* ---home---- */
+.home {
+    margin-top: 30vh;
+}
 .overlay {
     width: 100vw;
     height: 100vh;
@@ -59,10 +87,37 @@ nav .logo-container .logo {
             to bottom,
             rgba(0, 0, 0, 0.65) 0%,
             rgba(0, 0, 0, 0) 100%
-    )
+    ), url('./images/6e9794bcedeecf5a8f8f41338a2a7345.webp')
 }
 
+/* ---auth-modal---- */
+.close-icon {
+    float: right;
+}
+.auth-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 360px;
+    height: 600px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 40px;
+}
 
+.auth-modal form {
+    display: flex;
+    flex-direction: column;
+}
+.auth-modal input[type="email"],
+.auth-modal input[type="password"]{
+    padding: 8px;
+    margin: 8px;
+    font-size: 17px;
+}
 
 
 
