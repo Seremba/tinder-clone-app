@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCookies} from 'react-cookie'
 import axios from 'axios'
 
 
@@ -8,6 +9,7 @@ const AuthModal = ({setShowModal, isSignUp}) => {
   const [password, setPassword] = useState(null);
   const [comfirmPassword, setComfirmPassword] = useState(null);
   const [error, setError] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   let navigate = useNavigate();
 
@@ -17,18 +19,22 @@ const AuthModal = ({setShowModal, isSignUp}) => {
     }
     const handleSubmit = async(e) => {
       e.preventDefault();
-      console.log("submiting")
+      
       try {
         if(isSignUp && (password !== comfirmPassword)){
           setError("passwords do not match");
           return
         }
-        // console.log("make a post request to the DB")
-          const response =  await axios.post('http://localhost:8000/signup', {email, password})
-
+        // make a post request to the DB
+          const response =  await axios.post(`http://localhost:8000/${isSignUp? 'signup': 'login'}`, {email, password})
+        
+          
+          setCookie('UserId', response.data.userId)
+          setCookie('AuthToken', response.data.token)
           // on successful login 
           const success = response.status === 201;
-          if(success) navigate('/onboarding');
+          if(success && isSignUp) navigate('/onboarding');
+          if(success && !isSignUp) navigate('/dashboard');
 
       } catch(error) {
         console.log(error.message);
