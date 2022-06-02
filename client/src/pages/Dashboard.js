@@ -5,16 +5,19 @@ import { useCookies} from 'react-cookie'
 import axios from 'axios'
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState('')
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   const userId = cookies.UserId
+
   const getUser = async () => {
+
     try {
 
       const response = await axios.get('http://localhost:8000/user', {
         params: {userId}
       })
+
       setUser(response.data)
 
     } catch(err){
@@ -23,12 +26,12 @@ const Dashboard = () => {
       
     }
   }
-
+ 
   useEffect(() => {
     getUser()
   }, [])
  
-  console.log(user)
+  console.log("user", user)
   const characters = [
     {
       name: 'Richard Hendricks',
@@ -68,7 +71,7 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard'>
-      <ChatContainer />
+      <ChatContainer user={user}/>
       <div className="swipe-container">
         <div className="card-container">
         { characters.map((character) =>
