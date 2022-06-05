@@ -4,7 +4,8 @@ const { MongoClient } = require("mongodb")
 const {v4: uuidv4} = require("uuid")
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
-const cors = require("cors")
+const cors = require("cors");
+const e = require("cors");
 
 const uri = 'mongodb+srv://seremba:Pat2014Sarah@cluster0.fybz1.mongodb.net/?retryWrites=true&w=majority'
 const app = express()
@@ -78,7 +79,7 @@ app.post('/login', async (req, res) => {
         res.status(400).send("Invalid credentials");
         
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 })
 
@@ -86,8 +87,6 @@ app.post('/login', async (req, res) => {
 app.get('/user', async (req, res) => {
     const client = new MongoClient(uri)
     const userId = req.query.userId
-
-    // console.log('userId', userId)
 
     try {
         await client.connect()
@@ -103,21 +102,20 @@ app.get('/user', async (req, res) => {
 
 
 
-app.get('/users', async (req, res) => {
+app.get('/gendered-users', async (req, res) => {
     const client = new MongoClient(uri)
+    const gender = req.query.gender
 
     try {
         await client.connect()
         const database = client.db('app-data')
-        const users    =  database.collection('users')
+        const users = database.collection('users')
+        const query = {gender_identity: {$eq: gender}}
+        const foundUsers = await users.find(query).toArray()
+        res.json(foundUsers)
 
-        const returnedUsers = await users.find().toArray()
-        res.send(returnedUsers);
-
-    }catch(err){
-        console.log(err.message)
     } finally {
-        await client.close();
+        await client.close()
     }
 })
 
@@ -148,11 +146,30 @@ app.put('/user', async( req, res) => {
         res.send(insertedUser)
 
     } finally {
-        await client.close();
+        await client.close()
     }
 
 })
 
+app.put('/addmatch', async (req, res) => {
+    const client = new MongoClient(uri)
+    const {userId, matchedUserId} = req.body
+
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+
+        const query = {user_id: userId}
+        const updateDocument = {
+            $push: {matches: {user_id: matchedUserId}}
+        }
+        const user = await users.updateOne(query, updateDocument)
+        res.send(user)
+    } finally {
+        await client.close()
+    }
+})
 
 
 
