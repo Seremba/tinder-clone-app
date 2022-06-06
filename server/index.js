@@ -172,7 +172,34 @@ app.put('/addmatch', async (req, res) => {
 })
 
 
+app.get('/users', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userIds = JSON.parse(req.query.userIds)
 
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+
+        const pipeline =
+            [
+                {
+                    '$match': {
+                        'user_id': {
+                            '$in': userIds
+                        }
+                    }
+                }
+            ]
+
+        const foundUsers = await users.aggregate(pipeline).toArray()
+
+        res.json(foundUsers)
+
+    } finally {
+        await client.close()
+    }
+})
 
 
 

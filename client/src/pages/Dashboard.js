@@ -5,6 +5,7 @@ import { useCookies} from 'react-cookie'
 import axios from 'axios'
 
 const Dashboard = () => {
+  
   const [user, setUser] = useState(null)
   const [genderedUsers, setGenderedUsers] = useState(null)
   const [lastDirection, setLastDirection] = useState()
@@ -62,7 +63,7 @@ const updateMatches = async (matchedUserId) => {
     console.log(error)
   }
 }
-  console.log(user)
+  
 
   const swiped = (direction, swipedUserId) => {
     if( direction === 'right'){
