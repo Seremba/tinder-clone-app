@@ -17,7 +17,7 @@ const ChatContainer = ({user}) => {
           
         {!clickedUser && <MatchesDisplay matches={user.matches}  setClickedUser={setClickedUser}/>}
         
-       {clickedUser && <ChatDisplay />}
+       {clickedUser && <ChatDisplay user={user} clickedUser={clickedUser} />}
     </div>
   )
 }
